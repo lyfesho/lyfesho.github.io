@@ -191,7 +191,7 @@
 <p>这时，_post目录下会创建出一个与博客同名的文件夹</p>
 <p>4、放置图片资源</p>
 <p>图片放到上述_post目录中的[title]文件夹下，例如，我的目录大致如下：</p>
-<p>.<br>+– _posts<br>    +– title1<br>        +– images<br>            +– 1_1.png<br>            +– 1_2.png<br>    +– title1.md</p>
+<p>.<br>+– _posts<br>|    +– title1<br>|    |    +– images<br>|    |    |    +– 1_1.png<br>|    |    |    +– 1_2.png<br>|    +– title1.md</p>
 <p>再用markdown对应格式对图片进行引用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![pic_description](title1/images/1_1.jpg)</span><br></pre></td></tr></table></figure>
 <p>5、吐个槽<br>加载图片的时候按照上述方法操作，路径也是正确的，但是依旧在本地能正确预览，一旦deploy到github上就无法显示。最后靠着万能的F12，发现我保存的图片格式结尾是.PNG格式，而我在图片引用中，是按.png进行引用的。就这样导致我纠结了好久orz</p>

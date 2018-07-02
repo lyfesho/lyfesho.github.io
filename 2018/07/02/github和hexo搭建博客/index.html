@@ -17,7 +17,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/07/02/github和hexo搭建博客/images/1_1.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/07/02/github和hexo搭建博客/images/1_2.PNG">
 <meta property="og:image" content="http://yoursite.com/2018/07/02/github和hexo搭建博客/images/hexo_cata.PNG">
-<meta property="og:updated_time" content="2018-07-02T13:40:12.856Z">
+<meta property="og:updated_time" content="2018-07-02T13:45:02.936Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="github和hexo搭建博客">
 <meta name="twitter:description" content="题记正值暑假，想要好好补习大学没能掌握的专业知识，于是入手了C++ Primer Plus和APUE。觉得还是需要有所产出才能深入理解，同时方便温故知新。遂决定搭建一个blog进行记录。 依赖本文实践了使用hexo和github进行建站，其依赖工具有node jsgitgithub账号hexo 本文实践基于windows操作系统 实践过程前两者的安装过程就不再赘述了，下面重点看hexo以及gith">
@@ -197,7 +197,7 @@
 <p>这时，_post目录下会创建出一个与博客同名的文件夹</p>
 <p>4、放置图片资源</p>
 <p>图片放到上述_post目录中的[title]文件夹下，例如，我的目录大致如下：</p>
-<p>.<br>+– _posts<br>    +– title1<br>        +– images<br>            +– 1_1.png<br>            +– 1_2.png<br>    +– title1.md</p>
+<p>.<br>+– _posts<br>|    +– title1<br>|    |    +– images<br>|    |    |    +– 1_1.png<br>|    |    |    +– 1_2.png<br>|    +– title1.md</p>
 <p>再用markdown对应格式对图片进行引用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![pic_description](title1/images/1_1.jpg)</span><br></pre></td></tr></table></figure>
 <p>5、吐个槽<br>加载图片的时候按照上述方法操作，路径也是正确的，但是依旧在本地能正确预览，一旦deploy到github上就无法显示。最后靠着万能的F12，发现我保存的图片格式结尾是.PNG格式，而我在图片引用中，是按.png进行引用的。就这样导致我纠结了好久orz</p>
