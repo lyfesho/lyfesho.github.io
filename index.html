@@ -62,6 +62,147 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-github和hexo搭建博客" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/02/github和hexo搭建博客/" class="article-date">
+  <time datetime="2018-07-02T13:05:46.000Z" itemprop="datePublished">2018-07-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/02/github和hexo搭建博客/">github和hexo搭建博客</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题记"><a href="#题记" class="headerlink" title="题记"></a>题记</h2><p>正值暑假，想要好好补习大学没能掌握的专业知识，于是入手了C++ Primer Plus和APUE。觉得还是需要有所产出才能深入理解，同时方便温故知新。遂决定搭建一个blog进行记录。</p>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><p>本文实践了使用hexo和github进行建站，其依赖工具有<br><a href="http://nodejs.cn/download/" target="_blank" rel="noopener">node js</a><br><a href="https://git-scm.com/downloads" target="_blank" rel="noopener">git</a><br><a href="https://github.com/" target="_blank" rel="noopener">github账号</a><br>hexo</p>
+<p>本文实践基于windows操作系统</p>
+<h2 id="实践过程"><a href="#实践过程" class="headerlink" title="实践过程"></a>实践过程</h2><p>前两者的安装过程就不再赘述了，下面重点看hexo以及github page申请。</p>
+<h3 id="github-pages"><a href="#github-pages" class="headerlink" title="github pages"></a>github pages</h3><p><a href="https://pages.github.com/" target="_blank" rel="noopener">官方教程</a></p>
+<ul>
+<li>创建仓库</li>
+</ul>
+<p>首先创建一个仓库。登陆后在右上角点加号，选择New repository</p>
+<p><img src="/2018/07/02/github和hexo搭建博客/images/1_1.png" alt="new_repository"></p>
+<p>并命名为<em>username</em>.github.io，这里的<em>username</em>指你自己的github用户名</p>
+<p><img src="/2018/07/02/github和hexo搭建博客/images/1_2.png" alt="create_repository"></p>
+<ul>
+<li>clone仓库</li>
+</ul>
+<p>进入想要存储这个仓库的目录，将这个仓库克隆到本地</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/lyfesho/lyfesho.github.io</span><br></pre></td></tr></table></figure>
+<p>这里记得改成自己的用户名</p>
+<ul>
+<li>写一个测试页面</li>
+</ul>
+<p>进入克隆下来的该项目文件夹，加入一个html文件试试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> lyfesho.github.io</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">"Hello World"</span> &gt; index.html</span><br></pre></td></tr></table></figure>
+<ul>
+<li>提交</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git add --all</span><br><span class="line">$ git commit -m <span class="string">"Initial commit"</span></span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+<p><code>git add</code>用于将要提交的文件信息添加到索引库中（也就是将修改添加到暂存区）<br>索引相当于工作树，对工作树进行更改后，必须使用<code>git add</code>将新的修改添加到索引，再使用<code>git commit</code>进行提交，因此在<code>git commit</code>之前可以执行多次<code>git add</code>。</p>
+<p><code>git commit</code>用于将上述提交到存储库，将索引的当前内容与描述消息（例如 <code>&quot;Initial commit&quot;</code>）一起存储在新的提交中。当然，不只是上述提到的新增内容，使用了<code>git rm</code>从工作树和索引中删除文件后，也需要使用<code>git commit</code>命令进行提交。</p>
+<p><code>git push</code>使用本地引用更新远程引用。例如最后一行命令表示，将本地master分支推送到origin主机的master分支。</p>
+<p><a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">git官方文档（中文版）</a></p>
+<ul>
+<li>查看测试结果</li>
+</ul>
+<p>打开浏览器，进入<a href="https://lyfesho.github.io" target="_blank" rel="noopener">https://lyfesho.github.io</a> ,就可以看到页面上的Hello world了！</p>
+<h3 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h3><p>相比于上面直接编写html文件，hexo支持markdown格式，更加方便。</p>
+<p><a href="https://hexo.io/docs/index.html" target="_blank" rel="noopener">Hexo的官方文档</a></p>
+<ul>
+<li>安装hexo</li>
+</ul>
+<p>这一步是建立在已有node js和git的基础上。<br>在桌面右键打开git bash，并执行下述命令以完成安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置hexo</li>
+</ul>
+<p>首先建立一个想要存放hexo文件的文件夹，在此文件夹中右键打开git bash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+<p><code>hexo init [folder]</code>表示新建一个网站（若没有设置folder，会默认在当前文件夹下建立网站）<br><code>npm install</code>用于安装依赖</p>
+<p>hexo会自动在你的目标文件夹内生成建站所需文件,文件夹目录如下<br><img src="/2018/07/02/github和hexo搭建博客/images/hexo_cata.png" alt="hexo目录"><br>其中，_config.yml存放网站的配置信息；scaffolds存放新建文章的模板；source存放资源</p>
+<ul>
+<li>本地运行hexo</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s -g</span><br></pre></td></tr></table></figure>
+<p>此处罗列几个常用的hexo命令，以便理解：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g <span class="comment"># hexo generate # 生成静态文件</span></span><br><span class="line">$ hexo s <span class="comment"># hexo server #启动服务器，默认http://localhost:4000</span></span><br><span class="line">$ hexo d <span class="comment"># hexo deploy # 部署网站</span></span><br><span class="line">$ hexo new [title] <span class="comment"># 新建一篇文章</span></span><br><span class="line">$ hexo clean <span class="comment"># 清除缓存文件和已生成的静态文件（当对站点的更改不生效时可以考虑使用）</span></span><br></pre></td></tr></table></figure>
+<h3 id="github-hexo"><a href="#github-hexo" class="headerlink" title="github + hexo"></a>github + hexo</h3><p>现在分别配置好了github仓库和hexo，接下来需要将两者联系起来，也就是说将使用hexo写出的文章提交部署到github上</p>
+<h4 id="github设置SSH"><a href="#github设置SSH" class="headerlink" title="github设置SSH"></a>github设置SSH</h4><ul>
+<li>原因</li>
+</ul>
+<p>因为github要求提交代码的用户合法，也就是说每次用户向github提交代码时都需要进行身份验证。验证可以通过每次输入用户名密码完成，但是对于需要频繁提交代码的场合而言，这是一件很繁琐的事情，于是可以利用SSH进行身份验证</p>
+<p>验证方法是，用户在电脑上生成一个唯一的SSH公/私钥对，公钥给github，私钥自存。提交代码时github通过验证私钥判断用户身份。</p>
+<ul>
+<li>操作方法</li>
+</ul>
+<p>1、生成SSH</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">'[your mail]'</span></span><br></pre></td></tr></table></figure>
+<p><code>[your mail]</code>处填写自己的邮箱名（这里可以选择将生成的私钥存储在什么位置，默认回车就好）<br>输入github的账号密码后回车</p>
+<p>成功后生成的密钥就在刚才所说的默认位置处，私钥为id_rsa文件，公钥为id_rsa.pub文件</p>
+<p>2、修改github账号中的SSH信息</p>
+<p>找到上述id_rsa.pub文件，并复制其中内容，打开github，找到自己主页 -&gt; settings -&gt; SSH and GPG keys，之后点击Add SSH key，进行粘贴并添加即可</p>
+<p>3、配置github用户信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name [your name]</span><br><span class="line">$ git config --global user.email [your mail]</span><br></pre></td></tr></table></figure>
+<p><code>[your name]</code>处填写自己的用户名<br><code>[your mail]</code>处填写自己的邮箱名</p>
+<h4 id="配置hexo"><a href="#配置hexo" class="headerlink" title="配置hexo"></a>配置hexo</h4><p>主要思想是hexo有一个git插件，安装后通过修改hexo的配置文件即可实现将hexo的修改提交部署到github上</p>
+<ul>
+<li>插件安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<ul>
+<li>hexo配置文件修改</li>
+</ul>
+<p>找根目录下的配置文件_config.yml，下拉到最后找到deploy代码段修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/deployment.html</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: https://github.com/lyfesho/lyfesho.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<ul>
+<li>hexo提交</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<p>打开<a href="https://lyfesho.github.io/" target="_blank" rel="noopener">https://lyfesho.github.io/</a> 就可以看到hexo为模板的博客啦</p>
+<h3 id="博客更新"><a href="#博客更新" class="headerlink" title="博客更新"></a>博客更新</h3><p>当然只有模板不行，如何编辑新的文章并发表呢？</p>
+<ul>
+<li>新文章创建</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new [layout] <span class="string">"[title]"</span></span><br></pre></td></tr></table></figure>
+<p>这里的<code>[layout]</code>如果没有设置就会使用_config.yml文件中的<code>default_layout</code>，如果题目中包含空格，则需要使用引号括起来</p>
+<ul>
+<li>提交</li>
+</ul>
+<p>使用markdown进行编辑后，按hexo提交步骤操作，即可完成博客的更新</p>
+<h3 id="一个小问题"><a href="#一个小问题" class="headerlink" title="一个小问题"></a>一个小问题</h3><p>在这第一篇文章的完成过程中又遇到了一个问题，就是hexo本地预览时图片加载正常，但是<code>hexo d -g</code>命令放到github上去之后，图片显示就出现了问题，于是顺便总结了一个给hexo添加图片的过程</p>
+<p>1、将配置文件_config.yml中的post_asset_folder的值设置为true</p>
+<p>2、在hexo根目录下执行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+<p>3、创建新文章</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo n <span class="string">"[title]"</span></span><br></pre></td></tr></table></figure>
+<p>这时，_post目录下会创建出一个与博客同名的文件夹</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/02/github和hexo搭建博客/" data-id="cjj4amrvf0001vcuu0z60xwn6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-github_hexo" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/06/05/github_hexo/" class="article-date">
@@ -182,11 +323,12 @@
 <li>提交</li>
 </ul>
 <p>使用markdown进行编辑后，按hexo提交步骤操作，即可完成博客的更新</p>
+<h3 id="一个小问题"><a href="#一个小问题" class="headerlink" title="一个小问题"></a>一个小问题</h3><p>在这第一篇文章的完成过程中又遇到了一个问题，就是hexo本地预览时图片加载正常，但是<code>hexo d -g</code>命令放到github上去之后，图片显示就出现了问题，于是搜索了一个给hexo添加图片的过程</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/05/github_hexo/" data-id="cjj45i9gj0000uouuliay2924" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/05/github_hexo/" data-id="cjj4amruz0000vcuutljvlk9d" class="article-share-link">Share</a>
       
       
     </footer>
@@ -214,7 +356,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
     </div>
   </div>
 
@@ -225,6 +367,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/07/02/github和hexo搭建博客/">github和hexo搭建博客</a>
+          </li>
         
           <li>
             <a href="/2018/06/05/github_hexo/">hexo+github 网站搭建</a>

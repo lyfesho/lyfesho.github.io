@@ -5,23 +5,23 @@
   
 
   
-  <title>hexo+github 网站搭建 | Lyfesho’s Blog</title>
+  <title>github和hexo搭建博客 | Lyfesho’s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="题记正值暑假，想要好好补习大学没能掌握的专业知识，于是入手了C++ Primer Plus和APUE。觉得还是需要有所产出才能深入理解，同时方便温故知新。遂决定搭建一个blog进行记录。 依赖本文实践了使用hexo和github进行建站，其依赖工具有node jsgitgithub账号hexo 本文实践基于windows操作系统 实践过程前两者的安装过程就不再赘述了，下面重点看hexo以及gith">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo+github 网站搭建">
-<meta property="og:url" content="http://yoursite.com/2018/06/05/github_hexo/index.html">
+<meta property="og:title" content="github和hexo搭建博客">
+<meta property="og:url" content="http://yoursite.com/2018/07/02/github和hexo搭建博客/index.html">
 <meta property="og:site_name" content="Lyfesho’s Blog">
 <meta property="og:description" content="题记正值暑假，想要好好补习大学没能掌握的专业知识，于是入手了C++ Primer Plus和APUE。觉得还是需要有所产出才能深入理解，同时方便温故知新。遂决定搭建一个blog进行记录。 依赖本文实践了使用hexo和github进行建站，其依赖工具有node jsgitgithub账号hexo 本文实践基于windows操作系统 实践过程前两者的安装过程就不再赘述了，下面重点看hexo以及gith">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/images/1_1.png">
-<meta property="og:image" content="http://yoursite.com/images/1_2.png">
-<meta property="og:image" content="http://yoursite.com/images/hexo_cata.png">
-<meta property="og:updated_time" content="2018-07-02T13:07:46.157Z">
+<meta property="og:image" content="http://yoursite.com/2018/07/02/github和hexo搭建博客/images/1_1.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/02/github和hexo搭建博客/images/1_2.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/02/github和hexo搭建博客/images/hexo_cata.png">
+<meta property="og:updated_time" content="2018-07-02T13:21:31.233Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo+github 网站搭建">
+<meta name="twitter:title" content="github和hexo搭建博客">
 <meta name="twitter:description" content="题记正值暑假，想要好好补习大学没能掌握的专业知识，于是入手了C++ Primer Plus和APUE。觉得还是需要有所产出才能深入理解，同时方便温故知新。遂决定搭建一个blog进行记录。 依赖本文实践了使用hexo和github进行建站，其依赖工具有node jsgitgithub账号hexo 本文实践基于windows操作系统 实践过程前两者的安装过程就不再赘述了，下面重点看hexo以及gith">
-<meta name="twitter:image" content="http://yoursite.com/images/1_1.png">
+<meta name="twitter:image" content="http://yoursite.com/2018/07/02/github和hexo搭建博客/images/1_1.png">
   
     <link rel="alternate" href="/atom.xml" title="Lyfesho’s Blog" type="application/atom+xml">
   
@@ -68,10 +68,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-github_hexo" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-github和hexo搭建博客" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/06/05/github_hexo/" class="article-date">
-  <time datetime="2018-06-05T09:38:52.970Z" itemprop="datePublished">2018-06-05</time>
+    <a href="/2018/07/02/github和hexo搭建博客/" class="article-date">
+  <time datetime="2018-07-02T13:05:46.000Z" itemprop="datePublished">2018-07-02</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      hexo+github 网站搭建
+      github和hexo搭建博客
     </h1>
   
 
@@ -99,9 +99,9 @@
 <li>创建仓库</li>
 </ul>
 <p>首先创建一个仓库。登陆后在右上角点加号，选择New repository</p>
-<p><img src="/images/1_1.png" alt="new_repository"></p>
+<p><img src="/2018/07/02/github和hexo搭建博客/images/1_1.png" alt="new_repository"></p>
 <p>并命名为<em>username</em>.github.io，这里的<em>username</em>指你自己的github用户名</p>
-<p><img src="/images/1_2.png" alt="create_repository"></p>
+<p><img src="/2018/07/02/github和hexo搭建博客/images/1_2.png" alt="create_repository"></p>
 <ul>
 <li>clone仓库</li>
 </ul>
@@ -138,7 +138,7 @@
 <p>首先建立一个想要存放hexo文件的文件夹，在此文件夹中右键打开git bash</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
 <p><code>hexo init [folder]</code>表示新建一个网站（若没有设置folder，会默认在当前文件夹下建立网站）<br><code>npm install</code>用于安装依赖</p>
-<p>hexo会自动在你的目标文件夹内生成建站所需文件,文件夹目录如下<br><img src="/images/hexo_cata.png" alt="hexo目录"><br>其中，_config.yml存放网站的配置信息；scaffolds存放新建文章的模板；source存放资源</p>
+<p>hexo会自动在你的目标文件夹内生成建站所需文件,文件夹目录如下<br><img src="/2018/07/02/github和hexo搭建博客/images/hexo_cata.png" alt="hexo目录"><br>其中，_config.yml存放网站的配置信息；scaffolds存放新建文章的模板；source存放资源</p>
 <ul>
 <li>本地运行hexo</li>
 </ul>
@@ -182,18 +182,24 @@
 <ul>
 <li>新文章创建</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new [layout] <span class="string">"[title]"</span></span><br></pre></td></tr></table></figure>
 <p>这里的<code>[layout]</code>如果没有设置就会使用_config.yml文件中的<code>default_layout</code>，如果题目中包含空格，则需要使用引号括起来</p>
 <ul>
 <li>提交</li>
 </ul>
 <p>使用markdown进行编辑后，按hexo提交步骤操作，即可完成博客的更新</p>
-<h3 id="一个小问题"><a href="#一个小问题" class="headerlink" title="一个小问题"></a>一个小问题</h3><p>在这第一篇文章的完成过程中又遇到了一个问题，就是hexo本地预览时图片加载正常，但是<code>hexo d -g</code>命令放到github上去之后，图片显示就出现了问题，于是搜索了一个给hexo添加图片的过程</p>
+<h3 id="一个小问题"><a href="#一个小问题" class="headerlink" title="一个小问题"></a>一个小问题</h3><p>在这第一篇文章的完成过程中又遇到了一个问题，就是hexo本地预览时图片加载正常，但是<code>hexo d -g</code>命令放到github上去之后，图片显示就出现了问题，于是顺便总结了一个给hexo添加图片的过程</p>
+<p>1、将配置文件_config.yml中的post_asset_folder的值设置为true</p>
+<p>2、在hexo根目录下执行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+<p>3、创建新文章</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo n <span class="string">"[title]"</span></span><br></pre></td></tr></table></figure>
+<p>这时，_post目录下会创建出一个与博客同名的文件夹</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/05/github_hexo/" data-id="cjj4amruz0000vcuutljvlk9d" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/github和hexo搭建博客/" data-id="cjj4amrvf0001vcuu0z60xwn6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -202,15 +208,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/07/02/github和hexo搭建博客/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          github和hexo搭建博客
-        
-      </div>
-    </a>
   
+    <a href="/2018/06/05/github_hexo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">hexo+github 网站搭建</div>
+    </a>
   
 </nav>
 
