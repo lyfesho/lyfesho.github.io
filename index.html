@@ -62,6 +62,127 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LLMNR协议学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/02/13/LLMNR协议学习笔记/" class="article-date">
+  <time datetime="2019-02-13T03:08:07.000Z" itemprop="datePublished">2019-02-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/13/LLMNR协议学习笔记/">LLMNR协议学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>LLMNR(Link-local Multicast Name Resolution)是当传统DNS域名解析服务器不能用的时候用于在链路范围内进行域名解析的协议。<br>LLMNR包基于DNS包格式，但与DNS端口不同且拥有不同的解析缓存。但LLMNR只工作在本地链路范围内，因此并不能作为DNS的替代。<br>一般来说，LLMNR协议请求包会使用链路范围的多播地址作为目的地址，这类地址能防止LLMNR数据跨路由传播，造成可能过大的网络负载。同时下面会详细提到，LLMNR请求也存在被发送到一个单播地址的情况。</p>
+<h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><p>响应者（Responder）：监听LLMNR请求且对其进行权威应答的主机<br>发送者（Sender）：发送LLMNR请求的主机<br>单一性（UNIQUE）：某些情况下，多个响应者会对统一请求进行响应，当仅有一个响应者回复了名称解析时，就被称为具有单一性。而名称（name）的单一性是由响应者设定的，检验域名是否具有单一性是响应者的职责。</p>
+<h2 id="使用LLMNR进行域名解析的过程"><a href="#使用LLMNR进行域名解析的过程" class="headerlink" title="使用LLMNR进行域名解析的过程"></a>使用LLMNR进行域名解析的过程</h2><p>端口：<br>    LLMNR协议使用端口5355<br>IP地址：<br>    发送者发送请求以及响应者监听的IPv4地址为224.0.0.252，IPv6地址为FF02::1:3，这两个地址为链路范围的多播地址。<br>常见的LLMNR的会话过程：<br>    1、除非指定某一单播地址，否则LLMNR发送者会向指定链路范围多播地址发送请求<br>    2、仅当对请求的名称有权威解答时响应者才会进行响应。且一个响应者会用单播的UDP对多播请求进行响应<br>    3、发送者根据收到的请求进行处理</p>
+<p>一般来说，一个主机会被同时设置为发送者和响应者。（若一个主机被设置为响应者，则其一定具有发送者功能；但反过来，一个主机可以仅被设置为发送者，而无需是响应者）。<br>ps.名称的选择和设置可能由很多机制实现，例如DHCPv4和DHCPv6，不在该协议的讨论范围之内.</p>
+<h3 id="发送者行为"><a href="#发送者行为" class="headerlink" title="发送者行为"></a>发送者行为</h3><p>发送者可以向链路范围内的多播地址发送任何合法资源记录类型(A, AAAA, PTR, SRV …)的请求。<br>如果发送者没有接收到响应，那么一个解析器会看作这个域名不存在（返回RCODE=3）。对于多个响应，发送者可以根据源IP和ID进行去重。<br>当收到多个有效的LLMNR响应且其冲突位（c位）置1，则应将响应结果拼接起来，当作从DNS服务器接收到了多条RR来处理。（可想而知，这里必须是冲突位为1的结果相互拼接）</p>
+<h3 id="响应者行为"><a href="#响应者行为" class="headerlink" title="响应者行为"></a>响应者行为</h3><p>LLMNR响应必须以单播形式发给发送者<br>举例来说：<br>如果一个主机含有对名称“foo.example.com.”的权威解答。若该主机收到一个LLMNR的关于“foo.example.com.”的A记录请求，该主机会将对应的IP地址放在RDATA区域中进行回复。若回复者只有AAAA资源记录却受到了A记录请求，则会回复RCODE=0并且应答区为空。</p>
+<h2 id="LLMNR包格式"><a href="#LLMNR包格式" class="headerlink" title="LLMNR包格式"></a>LLMNR包格式</h2><p>LLMNR的包格式基于DNS的请求/应答包。<br>RFC协议规定，LLMNR应该发送/接受一定不会被分块的UDP包（即大小为512字节的包)，且LLMNR发送/接受的包不得大于link MTU和9194字节的最小值。</p>
+<h3 id="LLMNR包头格式"><a href="#LLMNR包头格式" class="headerlink" title="LLMNR包头格式"></a>LLMNR包头格式</h3><p><img src="/2019/02/13/LLMNR协议学习笔记/images/LLMNR_header.PNG" alt="LLMNR_header"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">键值</th>
+<th style="text-align:center">长度</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ID</td>
+<td style="text-align:center">16 bits</td>
+<td style="text-align:center">由生成请求的程序指定，该识别码会从请求包复制到应答包，由此允许发送者对响应进行匹配。该值应被设为随机值</td>
+</tr>
+<tr>
+<td style="text-align:center">QR</td>
+<td style="text-align:center">1 bit</td>
+<td style="text-align:center">设为1，代表为响应信息；设为0，代表为应答信息</td>
+</tr>
+<tr>
+<td style="text-align:center">OPCODE</td>
+<td style="text-align:center">4 bits</td>
+<td style="text-align:center">表示请求类型，由请求发起者设定并复制到响应包中，值为0表示是标准请求</td>
+</tr>
+<tr>
+<td style="text-align:center">C</td>
+<td style="text-align:center">1 bit</td>
+<td style="text-align:center">冲突位(conflict)置1表示发送者的一个请求收到了多个响应。在LLMNR的响应中，若name具有单一性，则该位置0，否则置1</td>
+</tr>
+<tr>
+<td style="text-align:center">TC</td>
+<td style="text-align:center">1 bit</td>
+<td style="text-align:center">截断位(TrunCation)置1表示消息超长被截断了。 LLMNR的请求中该位一定为0，否则会被响应者忽视。如果响应包该位为1，则应改为TCP单播进行请求</td>
+</tr>
+<tr>
+<td style="text-align:center">T</td>
+<td style="text-align:center">1 bit</td>
+<td style="text-align:center">试验位(Tentative)置1表示响应者对名称有权威应答但尚未验证该名称是否具有单一性</td>
+</tr>
+<tr>
+<td style="text-align:center">Z</td>
+<td style="text-align:center">1 bit</td>
+<td style="text-align:center">留作以后使用，现在无论请求/应答都需设置为0</td>
+</tr>
+<tr>
+<td style="text-align:center">RCODE</td>
+<td style="text-align:center">4 bit</td>
+<td style="text-align:center">响应码。发送者需将请求包中该值设为0；对多播LLMNR请求的响应中该值也设为0。若响应者对域名有权威解答但发生了错误，则响应者应将RCODE设为0且应答区RR条数为0，同时设置TC位。这将导致请求通过TCP重发，使得回复中RCODE可以不为0</td>
+</tr>
+<tr>
+<td style="text-align:center">QDCOUNT</td>
+<td style="text-align:center">16 bit</td>
+<td style="text-align:center">表示在查询区(question section)查询请求数量。发送者在查询区域应当只放一条请求（即该值为1）。QDCOUNT不为1的请求/响应包应被丢弃</td>
+</tr>
+<tr>
+<td style="text-align:center">ANCOUNT</td>
+<td style="text-align:center">16 bit</td>
+<td style="text-align:center">表示在应答区(answer section)资源记录数量。ANCOUNT不为0的请求包应被丢弃</td>
+</tr>
+<tr>
+<td style="text-align:center">NSCOUNT</td>
+<td style="text-align:center">16 bit</td>
+<td style="text-align:center">表示在权威记录区(authority records section)域名服务器资源记录数量。NSCOUNT不为0的请求包应被丢弃</td>
+</tr>
+<tr>
+<td style="text-align:center">ARCOUNT</td>
+<td style="text-align:center">16 bit</td>
+<td style="text-align:center">表示在附加记录区(additional records section)资源记录数量</td>
+</tr>
+</tbody>
+</table>
+<h2 id="wireshark捕包分析"><a href="#wireshark捕包分析" class="headerlink" title="wireshark捕包分析"></a>wireshark捕包分析</h2><p>以下是在某KTV中捕的包，把我的电脑直接连进了KTV的wifi下，能捕到的是自己电脑的流量以及其他设备的广播包</p>
+<p><img src="/2019/02/13/LLMNR协议学习笔记/images/wireshark.PNG" alt="wireshark"></p>
+<p>可以看到，只有query而没有response。因为通过IP和MAC可以看到发送者是我的电脑，因此不是因为响应是单播没有捕到，而是可能该链路范围中没有主机被设置为了LLMNR的接收者。（如果我把自己设置为LLMNR的接收者呢？那就等做完实验再更吧）</p>
+<p><img src="/2019/02/13/LLMNR协议学习笔记/images/query_packet.PNG" alt="query_packet"></p>
+<p>可以看到，包格式也与传统DNS包相符</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://tools.ietf.org/html/rfc4795" target="_blank" rel="noopener">LLMNR rfc 4795</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/02/13/LLMNR协议学习笔记/" data-id="cjs2ywosk00007cuutbijjd29" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-github和hexo搭建博客" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/02/github和hexo搭建博客/" class="article-date">
@@ -199,7 +320,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/github和hexo搭建博客/" data-id="cjj4bymm20000ckuuhewbpd6c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/github和hexo搭建博客/" data-id="cjs2ywot900017cuu0li4s4ue" class="article-share-link">Share</a>
       
       
     </footer>
@@ -227,7 +348,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
     </div>
   </div>
 
@@ -238,6 +359,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/02/13/LLMNR协议学习笔记/">LLMNR协议学习笔记</a>
+          </li>
         
           <li>
             <a href="/2018/07/02/github和hexo搭建博客/">github和hexo搭建博客</a>
@@ -255,7 +380,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 lyfesho<br>
+      &copy; 2019 lyfesho<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
