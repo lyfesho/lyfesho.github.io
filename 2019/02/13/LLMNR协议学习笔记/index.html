@@ -17,7 +17,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/02/13/LLMNR协议学习笔记/images/LLMNR_header.PNG">
 <meta property="og:image" content="http://yoursite.com/2019/02/13/LLMNR协议学习笔记/images/wireshark.PNG">
 <meta property="og:image" content="http://yoursite.com/2019/02/13/LLMNR协议学习笔记/images/query_packet.PNG">
-<meta property="og:updated_time" content="2019-02-13T04:45:26.336Z">
+<meta property="og:updated_time" content="2019-02-13T09:20:26.981Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LLMNR协议学习笔记">
 <meta name="twitter:description" content="LLMNR(Link-local Multicast Name Resolution)是当传统DNS域名解析服务器不能用的时候用于在链路范围内进行域名解析的协议。LLMNR包基于DNS包格式，但与DNS端口不同且拥有不同的解析缓存。但LLMNR只工作在本地链路范围内，因此并不能作为DNS的替代。一般来说，LLMNR协议请求包会使用链路范围的多播地址作为目的地址，这类地址能防止LLMNR数据跨路由传">
@@ -92,7 +92,11 @@
       
         <p>LLMNR(Link-local Multicast Name Resolution)是当传统DNS域名解析服务器不能用的时候用于在链路范围内进行域名解析的协议。<br>LLMNR包基于DNS包格式，但与DNS端口不同且拥有不同的解析缓存。但LLMNR只工作在本地链路范围内，因此并不能作为DNS的替代。<br>一般来说，LLMNR协议请求包会使用链路范围的多播地址作为目的地址，这类地址能防止LLMNR数据跨路由传播，造成可能过大的网络负载。同时下面会详细提到，LLMNR请求也存在被发送到一个单播地址的情况。</p>
 <h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><p>响应者（Responder）：监听LLMNR请求且对其进行权威应答的主机<br>发送者（Sender）：发送LLMNR请求的主机<br>单一性（UNIQUE）：某些情况下，多个响应者会对统一请求进行响应，当仅有一个响应者回复了名称解析时，就被称为具有单一性。而名称（name）的单一性是由响应者设定的，检验域名是否具有单一性是响应者的职责。</p>
-<h2 id="使用LLMNR进行域名解析的过程"><a href="#使用LLMNR进行域名解析的过程" class="headerlink" title="使用LLMNR进行域名解析的过程"></a>使用LLMNR进行域名解析的过程</h2><p>端口：<br>    LLMNR协议使用端口5355<br>IP地址：<br>    发送者发送请求以及响应者监听的IPv4地址为224.0.0.252，IPv6地址为FF02::1:3，这两个地址为链路范围的多播地址。<br>常见的LLMNR的会话过程：<br>    1、除非指定某一单播地址，否则LLMNR发送者会向指定链路范围多播地址发送请求<br>    2、仅当对请求的名称有权威解答时响应者才会进行响应。且一个响应者会用单播的UDP对多播请求进行响应<br>    3、发送者根据收到的请求进行处理</p>
+<h2 id="使用LLMNR进行域名解析的过程"><a href="#使用LLMNR进行域名解析的过程" class="headerlink" title="使用LLMNR进行域名解析的过程"></a>使用LLMNR进行域名解析的过程</h2><ul>
+<li>端口：<br>  LLMNR协议使用端口5355</li>
+<li>IP地址：<br>  发送者发送请求以及响应者监听的IPv4地址为224.0.0.252，IPv6地址为FF02::1:3，这两个地址为链路范围的多播地址。</li>
+<li>常见的LLMNR的会话过程：<br>  1、除非指定某一单播地址，否则LLMNR发送者会向指定链路范围多播地址发送请求<br>  2、仅当对请求的名称有权威解答时响应者才会进行响应。且一个响应者会用单播的UDP对多播请求进行响应<br>  3、发送者根据收到的请求进行处理</li>
+</ul>
 <p>一般来说，一个主机会被同时设置为发送者和响应者。（若一个主机被设置为响应者，则其一定具有发送者功能；但反过来，一个主机可以仅被设置为发送者，而无需是响应者）。<br>ps.名称的选择和设置可能由很多机制实现，例如DHCPv4和DHCPv6，不在该协议的讨论范围之内.</p>
 <h3 id="发送者行为"><a href="#发送者行为" class="headerlink" title="发送者行为"></a>发送者行为</h3><p>发送者可以向链路范围内的多播地址发送任何合法资源记录类型(A, AAAA, PTR, SRV …)的请求。<br>如果发送者没有接收到响应，那么一个解析器会看作这个域名不存在（返回RCODE=3）。对于多个响应，发送者可以根据源IP和ID进行去重。<br>当收到多个有效的LLMNR响应且其冲突位（c位）置1，则应将响应结果拼接起来，当作从DNS服务器接收到了多条RR来处理。（可想而知，这里必须是冲突位为1的结果相互拼接）</p>
 <h3 id="响应者行为"><a href="#响应者行为" class="headerlink" title="响应者行为"></a>响应者行为</h3><p>LLMNR响应必须以单播形式发给发送者<br>举例来说：<br>如果一个主机含有对名称“foo.example.com.”的权威解答。若该主机收到一个LLMNR的关于“foo.example.com.”的A记录请求，该主机会将对应的IP地址放在RDATA区域中进行回复。若回复者只有AAAA资源记录却受到了A记录请求，则会回复RCODE=0并且应答区为空。</p>
@@ -179,7 +183,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/13/LLMNR协议学习笔记/" data-id="cjs2ywosk00007cuutbijjd29" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/13/LLMNR协议学习笔记/" data-id="cjs2zjcqv0000bsuu59snkkw8" class="article-share-link">Share</a>
       
       
     </footer>
