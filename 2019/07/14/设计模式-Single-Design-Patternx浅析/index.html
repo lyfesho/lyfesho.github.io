@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>设计模式-Single Design Patternx浅析 | Lyfesho’s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Singleton Design Pattern-单实例模式 Ensure a class only has one instance and provide a global point of access to it.*引用自《head first design pattern》  ##单线程下的单实例模式 ###什么是单实例也就是说，对于一个特定的类，这个应用就只需要这个类的一个特定实例，不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式-Single Design Patternx浅析">
+<meta property="og:url" content="http://yoursite.com/2019/07/14/设计模式-Single-Design-Patternx浅析/index.html">
+<meta property="og:site_name" content="Lyfesho’s Blog">
+<meta property="og:description" content="Singleton Design Pattern-单实例模式 Ensure a class only has one instance and provide a global point of access to it.*引用自《head first design pattern》  ##单线程下的单实例模式 ###什么是单实例也就是说，对于一个特定的类，这个应用就只需要这个类的一个特定实例，不">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-14T06:23:42.628Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计模式-Single Design Patternx浅析">
+<meta name="twitter:description" content="Singleton Design Pattern-单实例模式 Ensure a class only has one instance and provide a global point of access to it.*引用自《head first design pattern》  ##单线程下的单实例模式 ###什么是单实例也就是说，对于一个特定的类，这个应用就只需要这个类的一个特定实例，不">
+  
+    <link rel="alternate" href="/atom.xml" title="Lyfesho’s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Lyfesho’s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-设计模式-Single-Design-Patternx浅析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/14/设计模式-Single-Design-Patternx浅析/" class="article-date">
+  <time datetime="2019-07-14T06:22:16.000Z" itemprop="datePublished">2019-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      设计模式-Single Design Patternx浅析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Singleton-Design-Pattern-单实例模式"><a href="#Singleton-Design-Pattern-单实例模式" class="headerlink" title="Singleton Design Pattern-单实例模式"></a>Singleton Design Pattern-单实例模式</h2><blockquote>
+<p>Ensure a class only has <strong>one instance</strong> and provide a <strong>global point of access</strong> to it.<br>*引用自《head first design pattern》</p>
+</blockquote>
+<p>##单线程下的单实例模式</p>
+<p>###什么是单实例<br>也就是说，对于一个特定的类，这个应用就只需要这个类的一个特定实例，不允许这个类有两个及以上实例的出现</p>
+<p>###为什么要用单实例<br>单实例的优点：<br>1、内存中只有一个对象，节省内存空间<br>2、避免对对象的频繁创建和销毁，提高性能</p>
+<p>但是其实我现在也很迷茫，按理说单实例适用的场景是，现在及将来你100%的确定你就只需要这一个实例，但是需求总是会变的，程序也总是需要扩展的，谁说的好以后会是什么样呢？</p>
+<p>也可能是我工程做的太少，没有碰到合适的使用场景，日后如果真的碰到了再来修改吧。</p>
+<p>###怎么保证单实例<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span>&#123;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">private</span> Singleton * instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;...&#125; <span class="comment">//将构造函数设为private保证外部不能直接new，而需要通过类内函数获取对象</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">public</span> Singleton * <span class="title">getInstance</span><span class="params">()</span></span>&#123; <span class="comment">//static方法，外部通过该方法获取Singleton实例</span></span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">NULL</span>)&#123; <span class="comment">//如果不存在实例，则创建一个</span></span><br><span class="line">            instance = <span class="keyword">new</span> Singleton(); <span class="comment">//因为在类内，所以可以使用private构造函数创建实例</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果创建过实例则可以直接返回</span></span><br><span class="line">        <span class="keyword">return</span> singleton;  <span class="comment">//返回一个Singleton类的实例，也保证了是Singleton类的唯一实例</span></span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用方法</span></span><br><span class="line">Singleton * s = Singleton::getInstance();</span><br></pre></td></tr></table></figure></p>
+<p>*为了便于表达，把指向实例的指针描述为实例</p>
+<p>##多线程下的单实例</p>
+<p>###两种实现<br>在引入多线程之前先来了解一下两种单实例的对象创建方法：<br>1、立即加载：在类进行初始化的时候就主动创建实例（也就是常说的饿汉模式）<br>2、延迟加载：在有需要的时候再去创建实例（也就是常说的懒汉模式）<br>对于<strong>立即加载</strong>而言，因为初始化的时候直接创建，也就是说，进入主函数之前就由主线程以单线程的方式完成了初始化，因此线程安全的。但是其<strong>缺点</strong>在于创建时间较早，会降低内存使用效率；<br>而<strong>延迟加载</strong>在多线程场景下就会产生线程安全的问题，具体来说就是在判断<code>instance == null</code>的时候：</p>
+<p>现在假设线程1判断<code>instance == null</code>，接下来要执行new Singleton()的时候被切换到了线程2；<br>此时instance还没有被创建出来，因此线程2也会判断出<code>instance == null</code>,进而创建实例；<br>实例创建成功后，切回线程1，线程1再次进行线程的创建。<br>产生错误!</p>
+<p>###如何解决多线程下的单实例创建问题</p>
+<p>####加锁<br>最直观的方法就是加锁<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">public</span> Singleton * <span class="title">getInstance</span><span class="params">()</span></span>&#123; <span class="comment">//static方法，外部通过该方法获取Singleton实例</span></span><br><span class="line">    **mutex.lock();**</span><br><span class="line">    <span class="keyword">if</span> (instance == <span class="literal">NULL</span>)&#123; <span class="comment">//如果不存在实例，则创建一个</span></span><br><span class="line">        instance = <span class="keyword">new</span> Singleton(); <span class="comment">//因为在类内，所以可以使用private构造函数创建实例</span></span><br><span class="line">    &#125;</span><br><span class="line">    **mutex.unlock();**</span><br><span class="line">    <span class="comment">//如果创建过实例则可以直接返回</span></span><br><span class="line">    <span class="keyword">return</span> singleton;  <span class="comment">//返回一个Singleton类的实例，也保证了是Singleton类的唯一实例</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是上述加锁方式存在问题：因为单实例只会实例化一次，而每次调用实例都会判断instance是否为NULL，也就是说，每次调用都需要加锁/解锁操作，这是耗时且不必要的，因此可以考虑先判断instance是否为NULL再进行加锁操作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">public</span> Singleton * <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">    **<span class="keyword">if</span> (instance == <span class="literal">NULL</span>)&#123;**</span><br><span class="line">        **mutex.lock();**</span><br><span class="line">            <span class="keyword">if</span> (instance == <span class="literal">NULL</span>)&#123;</span><br><span class="line">                instance = <span class="keyword">new</span> Singleton(); </span><br><span class="line">            &#125;</span><br><span class="line">        **mutex.unlock();**</span><br><span class="line">    **&#125;**</span><br><span class="line">    <span class="keyword">return</span> singleton;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>##实例的回收问题<br>因为系统会在程序结束的时候自动析构所有的全局变量和类的静态成员变量，因此可以利用这个特点完成对单实例的回收。<br>具体方法就是，在Singleton类中定义一个静态成员变量，通过系统调用该变量的析构函数完成对instance的析构。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Garbo</span>&#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ~Garbo()&#123;</span><br><span class="line">            <span class="keyword">if</span>(Singleton::instance)&#123;</span><br><span class="line">                <span class="keyword">delete</span>(Singleton::instance);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> Garbo garbo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>###参考<br><a href="https://youtu.be/v9ejT8FO-7I" target="_blank" rel="noopener">Strategy Pattern – Design Patterns (ep 1)</a><br><a href="https://www.cnblogs.com/loveis715/archive/2012/07/18/2598409.html" target="_blank" rel="noopener">面试中的Singleton</a><br>剑指Offer</p>
+<p>*备注<br>第一个参考的系列视频讲解的很通俗易懂，强烈安利<br>第二个参考写的比我理解的深入很多<br>剑指Offer纯粹是因为，要面试了所以开始了解设计模式ORZ</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/14/设计模式-Single-Design-Patternx浅析/" data-id="cjy2kq42k00019ouuy49hy69k" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/02/13/LLMNR协议学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LLMNR协议学习笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/14/设计模式-Single-Design-Patternx浅析/">设计模式-Single Design Patternx浅析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/13/LLMNR协议学习笔记/">LLMNR协议学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/02/github和hexo搭建博客/">github和hexo搭建博客</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 lyfesho<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
