@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://i.imgur.com/JBWJi0i.jpg">
 <meta property="og:image" content="https://i.imgur.com/hwydlWE.jpg">
 <meta property="og:image" content="https://i.imgur.com/9KopECs.jpg">
-<meta property="og:updated_time" content="2020-03-07T11:57:20.056Z">
+<meta property="og:updated_time" content="2020-03-07T12:03:31.968Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="虚拟机共享宿主机代理实现科学上网">
 <meta name="twitter:description" content="题记因为供linux使用的v2rayL有图形界面，在家网速较慢，经常下到一半报错说连接错误。毕业论文送审之际近在眼前，因此需要转换思维让linux完成翻墙的操作。 环境宿主机：    windows10，安装v2rayN，已完成订阅更新等步骤，可正常科学上网虚拟机：    VMware workstation 15    kali linux 2019 操作系统 配置主要思想让虚拟机与宿主机同处一">
@@ -108,25 +108,24 @@
 <h3 id="虚拟机配置"><a href="#虚拟机配置" class="headerlink" title="虚拟机配置"></a>虚拟机配置</h3><p>首先因为主要思想是局域网中的代理互联，因此将虚拟机网络设置为桥接模式。具体设置方法网上有很多，可以参考（<a href="https://blog.csdn.net/vicoqi/article/details/79951236）" target="_blank" rel="noopener">https://blog.csdn.net/vicoqi/article/details/79951236）</a></p>
 <p>完成桥接模式设置后，可以通过查看虚拟机ip地址和宿主机IP地址是否在同一网段判断该步骤是否成功。具体IP地址查看方法如下所示：<br><img src="https://i.imgur.com/e4kqyrW.jpg" alt="linux ip地址查看命令"></p>
 <p>*注意，如果虚拟机处于开机状态下，完成桥接模式的设置后需重启虚拟机</p>
-<p>接着在网络设置的代理选项中，选择手动代理进行配置，具体配置步骤如下图所示：<br><br></p>
-<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://i.imgur.com/PN2APP5.jpg" height="100"></div>
+<p>接着在网络设置的代理选项中，选择手动代理进行配置，具体配置步骤如下图所示：</p>
+<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://i.imgur.com/PN2APP5.jpg" width="200" height="260"></div>
 
-<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://i.imgur.com/JBWJi0i.jpg" height="100"></div>
+<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://i.imgur.com/JBWJi0i.jpg" width="200" height="260"></div>
 
-<p><br></p>
+
 <p>进入手动配置环节后，代理的IP地址即为宿主机的IP地址，端口号为当初记下的宿主机上v2rayN中的监听端口号。当然，不同的服务端口号不同，具体可以在宿主机的v2rayN配置界面看到，如下面左图所示。因此，对虚拟机上的代理配置如下面右图所示：</p>
-<p><br></p>
 <div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://i.imgur.com/hwydlWE.jpg" height="100"></div>
 
 <div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://i.imgur.com/9KopECs.jpg" height="100"></div>
 
-<p><br></p>
+
 <p>至此，配置过程完成，最后检查是否能正常完成网站的访问就好啦^^</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/07/虚拟机共享宿主机代理实现科学上网/" data-id="ck7hjzdb40002zsuuhkqo3jjm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/03/07/虚拟机共享宿主机代理实现科学上网/" data-id="ck7hk7awo00036guuzk3vdq4h" class="article-share-link">Share</a>
       
       
     </footer>
